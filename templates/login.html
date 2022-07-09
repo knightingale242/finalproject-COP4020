@@ -10,25 +10,14 @@
     <h1>The Conference Paper Management System</h1>
     <div class="center">
       <h1>Login</h1>
-      <form method="post">
-        <div class="txt_field">
-          <input type="text" required>
-          <span></span>
-          <label>Username</label>
-        </div>
-        <div class="txt_field">
-          <input type="password" required>
-          <span></span>
-          <label>Password</label>
-        </div>
-        <div class="pass">Forgot Password?</div>
-        <a href="{{url_for('welcome')}}">Login
-        <input type="submit" value="Login">
-        </a>
-        <a href="{{url_for('register')}}">Register</a>
-        <input type="submit" value="Register">
-        </div>
-      </form>
+      <form class="form-group" action="{{ url_for('login') }}" method="post">
+        <label>Username</label>
+        <input type="text" class="form-control" name="username" placeholder="Username" id="username" required>
+        <label>Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Password" id="password" required>
+        <input type="checkbox" value="checked"><b>Remember</b>
+        <input type="submit" value="Login" class="form-control btn btn-success " name="">
+       </form>
     </div>
 
   </body>
