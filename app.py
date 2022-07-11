@@ -1,3 +1,5 @@
+from genericpath import exists
+from tracemalloc import stop
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 import sqlite3
 import MySQLdb as mdb
@@ -78,6 +80,8 @@ def login():
             else:
                 return render_template('homepagereviewer.html')
         elif username == 'admin' and password == 'admin242':
+            session['loggedin'] = True
+            session['id'] = username
             return render_template('homepageadmin.html')
         else:
             # Account doesnt exist or username/password incorrect
@@ -86,9 +90,17 @@ def login():
     
     return render_template('login.html', msg=msg)
 
-@app.route('/scorebreakdown')
-def reports():
-    return render_template('scorebreakdown.html')
+@app.route('/scorebreakdown', methods=['GET', 'POST'])
+def scorebreakdown():
+    cur.execute("SELECT AuthorID FROM author WHERE EmailAddress = %s", [session['id']])
+    author_id = cur.fetchone()
+
+    cur.execute('select ReviewID, review.Paperid, Title, AppropriatenessOfTopic, TimelinessOfTopic, SupportiveEvidence, TechnicalQuality, ScopeOfCoverage, CitationOfPreviousWork, Originality, OrganizationOfPaper, ClarityOfMainMessage, Mechanics, SuitabilityForPresentation, PotentialInterestInTopic, OverallRating, ComfortLevelTopic, ComfortLevelAcceptability from review natural join paper where authorid = %s', [author_id[0]]) 
+    papers = cur.fetchall()
+    print(papers)
+    for paper in papers:
+        print(paper)
+    return render_template('scorebreakdown.html', papers = papers)
 
 @app.route('/welcome')
 def welcome():
@@ -133,8 +145,14 @@ def register():
             msg = 'Passwords do not match'
             return render_template('newaccount.html', msg=msg)
 
-        cur.execute('INSERT INTO author (AuthorID, FirstName, MiddleInitial, LastName, Affiliation, Department, Address, City, State, ZipCode, PhoneNumber, EmailAddress, Password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (authorid, fname, mname, lname, affil, department, address, city, state, zipCode, phone, email, password ))
-        db.commit()
+        if usertype == 'Author':
+            cur.execute('INSERT INTO author (AuthorID, FirstName, MiddleInitial, LastName, Affiliation, Department, Address, City, State, ZipCode, PhoneNumber, EmailAddress, Password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (authorid, fname, mname, lname, affil, department, address, city, state, zipCode, phone, email, password ))
+            db.commit()
+
+        else:
+            cur.execute('INSERT INTO reviewer (ReviewerID, FirstName, MiddleInitial, LastName, Affiliation, Department, Address, City, State, ZipCode, PhoneNumber, EmailAddress, Password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (authorid, fname, mname, lname, affil, department, address, city, state, zipCode, phone, email, password ))
+            db.commit()
+
 
         msg = 'Account successfully created!'
         return render_template('login.html', msg=msg)
@@ -166,7 +184,7 @@ def reviewreg():
     return render_template('registerforreview.html')
 
 @app.route('/reports')
-def scorebreakdown():
+def reports():
     return render_template('scorereport.html')
 
 @app.route('/reviewpaper', methods=['GET', 'POST'])
@@ -441,3 +459,88 @@ def logout():
    session.pop('id', None)
    # Redirect to login page
    return redirect(url_for('home'))
+
+@app.route('/manageusers', methods=['GET', 'POST'])
+def manageusers():
+    msg = ''
+    cur.execute('SELECT AuthorID, FirstName, LastName, EmailAddress from author UNION SELECT ReviewerID, FirstName, LastName, EmailAddress from reviewer')
+    database = cur.fetchall()
+
+    if request.method == "POST":
+        print('submitted properly')
+        userid = request.form['userid']
+        print(userid)
+        email = request.form['email']
+        print(email)
+        action = request.form['action']
+        print(action)
+        to_update = request.form['to_update']
+        print(to_update)
+        newvalue = request.form['updatedval']
+        print(newvalue)
+        password = request.form['password']
+        print(password)
+        stopsubs = request.form['stopsubmissions']
+        print(stopsubs)
+
+        cur.execute('SELECT * FROM author WHERE emailAddress = %s', [email])
+        exists = cur.fetchone()
+        if stopsubs == "yes":
+            pass
+
+        if exists:
+            if action == "delete":
+                cur.execute('DELETE FROM author WHERE EmailAddress = %s', [email])
+                msg = 'Changes Successfully Made'
+                return render_template('manageusers.html', database = database, msg = msg)
+            else:
+                statement1 = 'UPDATE author SET %s'
+                fixed = statement1 % to_update
+                statement2 = '= %s WHERE EmailAddress = %s'
+                input = fixed + statement2
+                print(input)
+                inputvals = (newvalue, email)
+                cur.execute(input, inputvals)
+                print(cur._last_executed)
+                print('Success')
+                msg = 'Changes Successfully Made'
+                return render_template('manageusers.html', database = database, msg = msg)
+
+        else:
+            if action == "delete":
+                cur.execute('DELETE FROM reviewer WHERE EmailAddress = %s', [email])
+                return render_template('manageusers.html', database = database)
+            else:
+                statement1 = 'UPDATE reviewer SET %s'
+                fixed = statement1 % to_update
+                statement2 = '= %s WHERE EmailAddress = %s'
+                input = fixed + statement2
+                print(input)
+                inputvals = (newvalue, email)
+                cur.execute(input, inputvals)
+                print(cur._last_executed)
+                print('Success')
+                msg = 'Changes Successfully Made'
+                return render_template('manageusers.html', database = database, msg = msg)
+
+    return render_template('manageusers.html', database = database)
+
+@app.route('/assignpapers', methods=['GET', 'POST'])
+def assignpapers():
+    msg = ''
+    if request.method == "POST":
+        paperid = request.form['paperid']
+        print(paperid)
+        reviewerid = request.form['reviewerID']
+        print(reviewerid)
+
+        reviewID = cur.execute("SELECT COUNT(*) FROM review")
+        reviewID = cur.fetchone()[0]
+        reviewID += 1
+
+        cur.execute('INSERT INTO review(ReviewID, PaperID, ReviewerID) VALUES (%s, %s, %s)', (reviewID, paperid, reviewerid))
+        print(cur._last_executed)
+        msg = 'Paper Assigned to Reviewer'
+        return render_template('assignpapers.html', msg = msg)
+
+    return render_template('assignpapers.html')

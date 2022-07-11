@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <link rel="stylesheet" href="{{ url_for('static', filename= 'css/base.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename= 'css/main.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <nav class="navbar navbar-expand-lg py-3 navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a href="#" class="navbar-brand">
+      <!-- Logo Image -->
+      <img src="https://cdn4.vectorstock.com/i/1000x1000/44/43/stack-paper-icon-logo-stationery-stacked-vector-26674443.jpg" width="45" alt="" class="d-inline-block align-middle mr-2">
+      <!-- Logo Text -->
+      <span class="text-uppercase font-weight-bold">CPMS</span>
+    </a>
+
+    <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
+
+    <div id="navbarSupportedContent" class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active"><a href="/" class="nav-link">Home </a></li>
+        <li class="nav-item"><a href="/distribute" class="nav-link">Search Reviewers</a></li>
+        <li class="nav-item"><a href="/manageusers" class="nav-link">Manage Users</a></li>
+        <li class="nav-item"><a href="/assignpapers" class="nav-link">Assign Papers</a></li>
+        <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<body>
+    <h1>Manage Users</h1>
+    <h2>{{msg}}</h2>
+    <form class="form-group" action="{{ url_for('manageusers') }}" method="post">
+        <label>User ID: </label>
+        <input type="text" class="form-control" name="userid" placeholder="Enter the User ID" id="userid" required>
+
+        <label>Email:</label>
+        <input type="text" class="form-control" name="email" placeholder="Enter the User Email" id="email" required>
+
+        <label for="email" class="cols-sm-2 control-label">Choose an account attribute to change:</label>
+          <select name="action" id="action">
+            <option value="Edit">Edit</option>
+            <option value="Delete">Delete</option>
+          </select>
+
+        <label for="email" class="cols-sm-2 control-label">Choose an account attribute to change:</label>
+          <select name="to_update" id="to_update">
+            <option value="FirstName">First Name</option>
+            <option value="MiddleInitial">Middle Initial</option>
+            <option value="LastName">Last Name</option>
+            <option value="Affiliation">Affiliation</option>
+            <option value="Department">Department</option>
+            <option value="Address">Address</option>
+            <option value="City">City</option>
+            <option value="State">State</option>
+            <option value="ZipCode">Zip Code</option>
+            <option value="PhoneNumber">Phone Number</option>
+            <option value="EmailAddress">Email Address</option>
+          </select>
+
+        <label>Update value:</label>
+          <input type="text" class="form-control" name="updatedval" placeholder="Enter the New Value" id="updatedval" required>
+  
+        <label for="email" class="cols-sm-2 control-label">Stop The Submissions of Papers and Reviews:</label>
+          <select name="stopsubmissions" id="stopsubmissions">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+
+        <label>Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Please Enter the Administrator Password" id="password" required>
+
+
+        <input type="submit" value="Update Account" class="form-control btn btn-success " name="">
+       </form>
+
+       <center>
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+          </tr>
+          {% for user in database %}
+          <tr>
+            <th>{{user[0]}}</th>
+            <th>{{user[1]}}</th>
+            <th>{{user[2]}}</th>
+            <th>{{user[3]}}</th>    
+          </tr>
+          {% endfor %}
+          </table>
+          </center>
+  </body>
+
+
+</html>
+

@@ -22,8 +22,9 @@
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a href="/" class="nav-link">Home </a></li>
-        <li class="nav-item"><a href="/authorreg" class="nav-link">Distribute Papers</a></li>
-        <li class="nav-item"><a href="/usermaintenance" class="nav-link">Manage Users</a></li>
+        <li class="nav-item"><a href="/distribute" class="nav-link">Search Reviewers</a></li>
+        <li class="nav-item"><a href="/manageusers" class="nav-link">Manage Users</a></li>
+        <li class="nav-item"><a href="/assignpapers" class="nav-link">Assign Papers</a></li>
         <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
       </ul>
     </div>
@@ -76,7 +77,7 @@
        </form>
        <h2>{{msg}}</h2>
         {% for reviewer in reviewers %}
-          <h3>Author ID: {{reviewer[0]}}</h3>
+          <h3>Reviewer ID: {{reviewer[0]}}</h3>
           <h3>First Name: {{reviewer[1]}}</h3>
           <h3>Last Name: {{reviewer[2]}}</h3>
           <h3>Email: {{reviewer[3]}}</h3>     

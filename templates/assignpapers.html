@@ -22,51 +22,29 @@
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a href="/" class="nav-link">Home </a></li>
-        <li class="nav-item"><a href="/distribute" class="nav-link">Distribute Papers</a></li>
-        <li class="nav-item"><a href="/usermaintenance" class="nav-link">Manage Users</a></li>
+        <li class="nav-item"><a href="/distribute" class="nav-link">Search Reviewers</a></li>
+        <li class="nav-item"><a href="/manageusers" class="nav-link">Manage Users</a></li>
+        <li class="nav-item"><a href="/assignpapers" class="nav-link">Assign Papers</a></li>
         <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
       </ul>
     </div>
   </div>
 </nav>
+
 <body>
-  <h1>The Conference Paper Management System</h1>
-    <h2>User Maintenence</h2>
-    <table>
-      <tr>
-        <th>Author ID</th>
-        <th>First Name</th>
-        <th>Middle Initial</th>
-        <th>Last Name</th>
-        <th>Affiliation</th>
-        <th>Department</th>
-        <th>Address</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip Code</th>
-        <th>Phone Number</th>
-        <th>Email</th>
-        <th>Password</th>
-      </tr>
-      {% for user in users %}
-      <tr>
-        <th>{{user[0]}}</th>
-        <th>{{user[1]}}</th>
-        <th>{{user[2]}}</th>
-        <th>{{user[3]}}</th>
-        <th>{{user[4]}}</th>
-        <th>{{user[5]}}</th>
-        <th>{{user[6]}}</th>
-        <th>{{user[7]}}</th>
-        <th>{{user[8]}}</th>
-        <th>{{user[9]}}</th>
-        <th>{{user[10]}}</th>
-        <th>{{user[11]}}</th>
-        <th>{{user[12]}}</th>     
-      </tr>
-      {% endfor %}
-    </table>
-</body>
+    <h1>Assign Papers</h1>
+    <h2>{{msg}}</h2>
+    <form class="form-group" action="{{ url_for('assignpapers') }}" method="post">
+        <label>Paper ID: </label>
+        <input type="text" class="form-control" name="paperid" placeholder="Please Enter A PaperID" id="paperid" required>
+
+        <label>Reviewer ID:</label>
+        <input type="text" class="form-control" name="reviewerID" placeholder="Enter A Reviewer ID" id="reviewerID" required>
+
+        <input type="submit" value="Assign Paper" class="form-control btn btn-success " name="">
+       </form>
+  </body>
 
 
 </html>
+
