@@ -21,37 +21,23 @@
 
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item active"><a href="/welcome" class="nav-link">Home </a></li>
-        <li class="nav-item"><a href="/uploadreview" class="nav-link">Account</a></li>
+        <li class="nav-item active"><a href="/" class="nav-link">Home </a></li>
+        <li class="nav-item"><a href="/revieweraccount" class="nav-link">Account</a></li>
+        <li class="nav-item"><a href="/viewpaper" class="nav-link">View Papers</a></li>
         <li class="nav-item"><a href="/reviewreg" class="nav-link">Reviewer Registraion</a></li>
         <li class="nav-item"><a href="/reviewpaper" class="nav-link">Review Paper</a></li>
+        <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
       </ul>
     </div>
   </div>
 </nav>
   <body>
     <h1>Review Paper</h1>
-    <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
-        <div class="form-group">
-            <label for="affiliation" class="cols-sm-2 control-label">Paper ID</label>
-            <div class="cols-sm-10">
-             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="title" id="paperid" placeholder="Enter The Paper ID" required>
-             </div>
-            </div>
-           </div>
+    <h2>{{msg}}</h2>
+    <form action="{{ url_for('reviewpaper') }}" method="post" autocomplete="off"> 
+        <label>Paper ID</label>
+        <input type="text" class="form-control" name="paperid" placeholder="Email" id="paper_id" required>
 
-        <div class = 'form-group'></div>
-        <label>Appropriateness of topic:</label>
-        <select id="ReviewID" name='topic'>
-            <option value=1>1</option>
-            <option value=2>2</option>
-            <option value=2>3</option>
-            <option value=4>4</option>
-        </select>
-
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Appropriateness of topic:</label>
             <select id="Appropriateness" name='topic'>
@@ -61,7 +47,6 @@
                 <option value=4>4</option>
             </select>
 
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Timeliness Of Topic:</label>
             <select id="Timeliness" name='topic'>
@@ -70,8 +55,7 @@
                 <option value=2>3</option>
                 <option value=4>4</option>
             </select>
-
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
+ 
             <div class = 'form-group'></div>
             <label>Supportive Evidence:</label>
             <select id="Supportive" name='topic'>
@@ -81,17 +65,15 @@
                 <option value=4>4</option>
             </select>
         
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Technical Quality,:</label>
-            <select id="technicalquality" name='topic'>
+            <select id="TechnicalQuality" name='topic'>
                 <option value=1>1</option>
                 <option value=2>2</option>
                 <option value=2>3</option>
                 <option value=4>4</option>
             </select>
         
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Scope Of Coverage:</label>
             <select id="Scope" name='topic'>
@@ -101,7 +83,6 @@
                 <option value=4>4</option>
             </select>
 
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Citation Of Previous Work:</label>
             <select id="Citations" name='topic'>
@@ -111,7 +92,6 @@
                 <option value=4>4</option>
             </select>
 
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Originality:</label>
             <select id="Originality" name='topic'>
@@ -121,7 +101,6 @@
                 <option value=4>4</option>
             </select>
 
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Organization Of Paper:</label>
             <select id="Organization" name='topic'>
@@ -130,18 +109,7 @@
                 <option value=2>3</option>
                 <option value=4>4</option>
             </select>
-
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
-            <div class = 'form-group'></div>
-            <label>Appropriateness of topic:</label>
-            <select id="ReviewID" name='topic'>
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=2>3</option>
-                <option value=4>4</option>
-            </select>
-
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
+ 
             <div class = 'form-group'></div>
             <label>Clarity Of Main Message:</label>
             <select id="Clarity" name='topic'>
@@ -151,7 +119,6 @@
                 <option value=4>4</option>
             </select>
 
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Mechanics:</label>
             <select id="Mechanics" name='topic'>
@@ -161,17 +128,6 @@
                 <option value=4>4</option>
             </select>
 
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
-            <div class = 'form-group'></div>
-            <label>Appropriateness of topic:</label>
-            <select id="ReviewID" name='topic'>
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=2>3</option>
-                <option value=4>4</option>
-            </select>
-
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Suitability For Presentation:</label>
             <select id="Suitability" name='topic'>
@@ -181,7 +137,6 @@
                 <option value=4>4</option>
             </select>
 
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
             <div class = 'form-group'></div>
             <label>Potential Interest In Topic:</label>
             <select id="PotentialInterest" name='topic'>
@@ -190,8 +145,7 @@
                 <option value=2>3</option>
                 <option value=4>4</option>
             </select>
-    
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
+     
             <div class = 'form-group'></div>
             <label>Comfort Level Topic:</label>
             <select id="ComfortLevel" name='topic'>
@@ -201,7 +155,15 @@
                 <option value=4>4</option>
             </select>
 
-        <form action="{{ url_for('distribute') }}" method="post" autocomplete="off"> 
+            <div class = 'form-group'></div>
+            <label>Overall Rating:</label>
+            <select id="overallrating" name='topic'>
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=2>3</option>
+                <option value=4>4</option>
+            </select>
+
             <div class = 'form-group'></div>
             <label>Comfort Level Acceptability:</label>
             <select id="ComfortLevelAccept" name='topic'>
@@ -211,10 +173,8 @@
                 <option value=4>4</option>
             </select>
 
-
         <input type="submit" value="Upload Review" class="form-control btn btn-success " name="">
-         
-       </form>
+    </form>
   </body>
 
 

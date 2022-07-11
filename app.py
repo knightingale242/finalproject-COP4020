@@ -3,6 +3,8 @@ import sqlite3
 import MySQLdb as mdb
 from psycopg2.extensions import AsIs
 
+from connector import PaperID
+
 DBNAME="cpms"  # database name
 #DBPORT=3306      # database port
 DBHOST="localhost"  # database host
@@ -21,9 +23,17 @@ print("hello world")
 def home():
      # Check if user is loggedin
     if 'loggedin' in session:
-   
+        cur.execute('SELECT * FROM author WHERE emailAddress = %s', [session['id']])
+        account = cur.fetchone()
+
+        if account:
+            return render_template('homepageauthor.html')
+        elif session['id'] == "admin":
+            return render_template('homepageadmin.html')
+        else:
+            return render_template('homepagereviewer.html')
         # User is loggedin show them the home page
-        return render_template('homepageauthor.html')
+        #return render_template('homepageauthor.html')
     # User is not loggedin redirect to login page
     print('new session')
     return redirect(url_for('login'))
@@ -33,7 +43,6 @@ def home():
 def home():
     return render_template('newaccount.html')
 '''''
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -57,6 +66,7 @@ def login():
 # Create session data, we can access this data in other routes
             session['loggedin'] = True
             session['id'] = username
+            print(session['id'])
             # Redirect to home page
             #return 'Logged in successfully!'
             print('it worked')
@@ -152,22 +162,89 @@ def reviewreg():
         print(cur.execute('Select Firstname from reviewer where ReviewerID = 1'))
         msg = 'Successfully Registered!'
         return render_template('registerforreview.html', msg = msg)
-        pass
+        
     return render_template('registerforreview.html')
 
 @app.route('/reports')
 def scorebreakdown():
     return render_template('scorereport.html')
 
-@app.route('/uploadreview')
-def uploadreview():
-    return render_template('uploadreview.html')
+@app.route('/reviewpaper', methods=['GET', 'POST'])
+def reviewpaper():
+    msg = ''
+    if request.method == 'POST':
+        cur.execute("SELECT ReviewerID FROM reviewer WHERE EmailAddress = %s", [session['id']])
+        reviewer_id = cur.fetchone()
+        print(cur._last_executed)
+        print('in request method')
+
+        paper = request.form['paper_id']
+        print(paper)
+        value1 = request.form['Appropriateness']
+        print(value1)
+        value2 = request.form['Timeliness']
+        print(value2)
+        value3 = request.form['Supportive']
+        print(value3)
+        value4 = request.form['TechnicalQuality']
+        print(value4)
+        value5 = request.form['Scope']
+        print(value5)
+        value6 = request.form['Citations']
+        print(value6)
+        value7 = request.form['Originality']
+        print(value7)
+        value8 = request.form['Organization']
+        print(value8)
+        value9 = request.form['Clarity']
+        print(value9)
+        value10 = request.form['Mechanics']
+        print(value10)
+        value11 = request.form['Suitability']
+        print(value11)
+        value12 = request.form['PotentialInterest']
+        print(value12)
+        value13 = request.form['ComfortLevel']
+        print(value13)
+        value14 = request.form['ComfortLevelAccept']
+        print(value14)
+        value15 = request.form['overallrating']
+        print(value15)
+
+        cur.execute('''UPDATE review SET 
+            AppropriatenessOfTopic = %s,
+            TimelinessOfTopic = %s,
+            SupportiveEvidence = %s,
+            TechnicalQuality = %s,
+            ScopeOfCoverage = %s,
+            CitationOfPreviousWork = %s,
+            Originality = %s,
+            OrganizationOfPaper = %s,
+            ClarityOfMainMessage = %s,
+            Mechanics = %s,
+            SuitabilityForPresentation = %s,
+            PotentialInterestInTopic = %s,
+            OverallRating = %s,
+            ComfortLevelTopic = %s,
+            ComfortLevelAcceptability = %s,
+        WHERE
+            ReviewerID = %s and PaperID = %s''', (value1, value2, value3, value4, value5, value6, value7, value8, value9, value10, value11, value12, value13, value14, value15, reviewer_id, paper))
+        
+        db.commit()
+        msg = "Review Successfully Uploaded"
+        return render_template('reviewpaper.html', msg = msg)
+
+    return render_template('reviewpaper.html')
 
 @app.route('/viewpaper')
 def viewpaper():
-    reviewer_id = cur.execute("SELECT ReviewerID FROM reviewer WHERE EmailAddress = %s", [session['id']])
+    cur.execute("SELECT ReviewerID FROM reviewer WHERE EmailAddress = %s", [session['id']])
+    reviewer_id = cur.fetchone()
     print(reviewer_id)
-    cur.execute('select paper.PaperID, Title, FilenameOriginal from paper natural join review where ReviewerID = %s', [reviewer_id])
+    print(cur._last_executed)
+    print(reviewer_id)
+    cur.execute('select paper.PaperID, Title, FilenameOriginal from paper natural join review where ReviewerID = %s', [reviewer_id[0]])
+    print(cur._last_executed)
     papers = cur.fetchall()
     print(papers)
 
@@ -272,7 +349,9 @@ def revieweraccount():
     msg = ''
 
     if request.method == 'POST':
-        reviewer_id = cur.execute("SELECT ReviewerID FROM reviewer WHERE EmailAddress = %s", [session['id']])
+        cur.execute("SELECT ReviewerID FROM reviewer WHERE EmailAddress = %s", [session['id']])
+        reviewer_id = cur.fetchone()
+        print(reviewer_id)
         print('in request method')
         to_update = request.form['to_update']
         print(to_update)
@@ -288,7 +367,7 @@ def revieweraccount():
             statement1 = 'Update reviewer SET %s = ' 
             statement2 = '%s WHERE ReviewerID = %s'
             value = to_update
-            inputs = (new_val, reviewer_id)
+            inputs = (new_val, reviewer_id[0])
             new = statement1 % value
             print(new)
             input = new + statement2
@@ -322,6 +401,10 @@ def retrieve():
             flash(msg)
             return render_template('getpassword.html', msg = msg)
 
+        elif email == "admin@cpms" and zipcode == "12345":
+            msg = 'Your Password is admin242'
+            return render_template('getpassword.html', msg = msg)
+
     return render_template('getpassword.html')
 
 @app.route('/distribute', methods=['GET', 'POST'])
@@ -346,7 +429,15 @@ def distribute():
             msg = "Here is a list of qualified reviewers:"
             print(msg)
             print(reviewers)
-            return render_template("reviewpaper.html")
+            return render_template("distributepapers.html", msg = msg, reviewers = reviewers)
 
 
-    return render_template("reviewpaper.html")
+    return render_template("distributepapers.html")
+
+@app.route('/logout')
+def logout():
+    # Remove session data, this will log the user out
+   session.pop('loggedin', None)
+   session.pop('id', None)
+   # Redirect to login page
+   return redirect(url_for('home'))
