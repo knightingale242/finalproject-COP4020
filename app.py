@@ -135,8 +135,24 @@ def register():
 def authorreg():
     return render_template('authorreg.html')
 
-@app.route('/reviewreg')
+@app.route('/reviewreg',  methods=['GET', 'POST'])
 def reviewreg():
+    if request.method == "POST":
+        topic = request.form['topic']
+        reviewer_id = cur.execute("SELECT ReviewerID FROM reviewer WHERE EmailAddress = %s", [session['id']])
+        statement1 = 'Update reviewer SET %s = ' 
+        statement2 = '1 WHERE ReviewerID = %s'
+        fix1 = statement1 % topic
+        fix2 = statement2 % reviewer_id
+        input = fix1 + fix2
+        print(input)
+        cur.execute(input)
+        db.commit()
+        print(cur._last_executed)
+        print(cur.execute('Select Firstname from reviewer where ReviewerID = 1'))
+        msg = 'Successfully Registered!'
+        return render_template('registerforreview.html', msg = msg)
+        pass
     return render_template('registerforreview.html')
 
 @app.route('/reports')
@@ -147,13 +163,16 @@ def scorebreakdown():
 def uploadreview():
     return render_template('uploadreview.html')
 
-@app.route('/reviewpaper')
-def reviewpaper():
-    cur.execute('SELECT Title, PaperID FROM paper')
-    posts = cur.fetchall()
-    for post in posts:
-        print(post)
-    return render_template('reviewpaper.html', posts = posts)
+@app.route('/viewpaper')
+def viewpaper():
+    reviewer_id = cur.execute("SELECT ReviewerID FROM reviewer WHERE EmailAddress = %s", [session['id']])
+    print(reviewer_id)
+    cur.execute('select paper.PaperID, Title, FilenameOriginal from paper natural join review where ReviewerID = %s', [reviewer_id])
+    papers = cur.fetchall()
+    print(papers)
+
+    return render_template('viewpapers.html', papers = papers)
+
 
 #manages uploading papers
 @app.route('/uploadpaper', methods=['GET', 'POST'])
@@ -247,6 +266,41 @@ def authoraccount():
 
     return render_template('authoraccount.html')
 
+@app.route('/revieweraccount')
+def revieweraccount():
+    print('in reviewer account')
+    msg = ''
+
+    if request.method == 'POST':
+        reviewer_id = cur.execute("SELECT ReviewerID FROM reviewer WHERE EmailAddress = %s", [session['id']])
+        print('in request method')
+        to_update = request.form['to_update']
+        print(to_update)
+        new_val = request.form['newval']
+        print(new_val)
+        password = request.form['password']
+        print(password)
+
+        valid = cur.execute('SELECT * FROM reviewer WHERE Password = %s', [password])
+
+        if valid:
+            print('valid')
+            statement1 = 'Update reviewer SET %s = ' 
+            statement2 = '%s WHERE ReviewerID = %s'
+            value = to_update
+            inputs = (new_val, reviewer_id)
+            new = statement1 % value
+            print(new)
+            input = new + statement2
+            print(input)
+            cur.execute(input, inputs)
+            db.commit()
+            print(cur._last_executed)
+            print(cur.execute('Select Firstname from reviewer where ReviewerID = 1'))
+            msg = 'Account change successful!'
+            return render_template('revieweraccount.html', msg = msg)
+    return render_template('revieweraccount.html')
+
 @app.route('/retrieve', methods=['GET', 'POST'])
 def retrieve():
     msg = ''
@@ -269,3 +323,30 @@ def retrieve():
             return render_template('getpassword.html', msg = msg)
 
     return render_template('getpassword.html')
+
+@app.route('/distribute', methods=['GET', 'POST'])
+def distribute():
+    msg = ''
+    if request.method == "POST":
+        topic = request.form['topic']
+        print(topic)
+
+        statement1 = "SELECT ReviewerID, FirstName, LastName, EmailAddress, ReviewsAcknowledged  from reviewer Where Active = 1 AND ReviewsAcknowledged < 3 AND" 
+        statement2 =" %s = 1"
+        fixed = statement2 % topic
+        print(fixed)
+        input = statement1 + fixed
+        print(input)
+
+        print(cur.execute(input))
+        reviewers = cur.fetchall()
+
+        if len(reviewers) > 0:
+            print('in if statement')
+            msg = "Here is a list of qualified reviewers:"
+            print(msg)
+            print(reviewers)
+            return render_template("reviewpaper.html")
+
+
+    return render_template("reviewpaper.html")
