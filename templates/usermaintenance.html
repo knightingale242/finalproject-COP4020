@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - youtube.com/codingnepal -->
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -8,32 +7,40 @@
   </head>
   <body>
     <h1>The Conference Paper Management System</h1>
-    <div class="center">
-      <h1>User Maintenence</h1>
-      <form method="post">
-        <div class="txt_field">
-          <input type="text" required>
-          <span></span>
-          <label>Name</label>
-        </div>
-        <div class="txt_field">
-          <input type="password" required>
-          <span></span>
-          <label>Affiliation</label>
-        </div>
-        <div class="txt_field">
-            <input type="password" required>
-            <span></span>
-            <label>Department</label>
-          </div>
-        <div class="flex-parent jc-center">
-            <input type="submit" value="Add">
-            <input type="submit" value="Delete">
-            <input type="submit" value="Modify">
-        </div>
-        </div>
-      </form>
-    </div>
-
+      <h2>User Maintenence</h2>
+      <table>
+        <tr>
+          <th>Author ID</th>
+          <th>First Name</th>
+          <th>Middle Initial</th>
+          <th>Last Name</th>
+          <th>Affiliation</th>
+          <th>Department</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Zip Code</th>
+          <th>Phone Number</th>
+          <th>Email</th>
+          <th>Password</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+          <th>{{user[0]}}</th>
+          <th>{{user[1]}}</th>
+          <th>{{user[2]}}</th>
+          <th>{{user[3]}}</th>
+          <th>{{user[4]}}</th>
+          <th>{{user[5]}}</th>
+          <th>{{user[6]}}</th>
+          <th>{{user[7]}}</th>
+          <th>{{user[8]}}</th>
+          <th>{{user[9]}}</th>
+          <th>{{user[10]}}</th>
+          <th>{{user[11]}}</th>
+          <th>{{user[12]}}</th>     
+        </tr>
+        {% endfor %}
+      </table>
   </body>
 </html>

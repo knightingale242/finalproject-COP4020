@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 import sqlite3
 import MySQLdb as mdb
+from psycopg2.extensions import AsIs
 
 DBNAME="cpms"  # database name
 #DBPORT=3306      # database port
@@ -22,7 +23,7 @@ def home():
     if 'loggedin' in session:
    
         # User is loggedin show them the home page
-        return render_template('homepage.html')
+        return render_template('homepageauthor.html')
     # User is not loggedin redirect to login page
     print('new session')
     return redirect(url_for('login'))
@@ -63,9 +64,11 @@ def login():
             account = cur.fetchone()
 
             if account:
-                return render_template('homepage.html')
+                return render_template('homepageauthor.html')
             else:
                 return render_template('homepagereviewer.html')
+        elif username == 'admin' and password == 'admin242':
+            return render_template('homepageadmin.html')
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
@@ -81,22 +84,51 @@ def reports():
 def welcome():
     return render_template('homepage.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    '''''
+    authorid = 11
+    msg = ''
     if request.method == 'POST':
-        fname = request.form['fname']
-        mname = request.form['fname']
-        lname = request.form['fname']
-        affil = request.form['fname']
-        department = request.form['fname']
-        address = request.form['fname']
-        city = request.form['fname']
-        state = request.form['fname']
-        zipCode = request.form['fname']
-        phone = request.form['fname']
-        emailadd = request.form['fname']
-'''
+        print('here')
+        fname = request.form['firstname']
+        print(fname)
+        mname = request.form['middleinit']
+        print(mname)
+        lname = request.form['lname']
+        print(lname)
+        affil = request.form['affil']
+        print(affil)
+        department = request.form['dpmt']
+        print(department)
+        address = request.form['address']
+        print(address)
+        city = request.form['city']
+        print(city)
+        state = request.form['state']
+        print(state)
+        zipCode = request.form['zip']
+        print(zipCode)
+        phone = request.form['phone']
+        print(phone)
+        email = request.form['email']
+        print(email)
+        usertype = request.form['usertype']
+        print(usertype)
+        password = request.form['password']
+        print(password)
+        confpass = request.form['confirmpass']
+        print(confpass)
+
+        if password != confpass:
+            msg = 'Passwords do not match'
+            return render_template('newaccount.html', msg=msg)
+
+        cur.execute('INSERT INTO author (AuthorID, FirstName, MiddleInitial, LastName, Affiliation, Department, Address, City, State, ZipCode, PhoneNumber, EmailAddress, Password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (authorid, fname, mname, lname, affil, department, address, city, state, zipCode, phone, email, password ))
+        db.commit()
+
+        msg = 'Account successfully created!'
+        return render_template('login.html', msg=msg)
+
     return render_template('newaccount.html')
 
 @app.route('/authorreg')
@@ -117,4 +149,123 @@ def uploadreview():
 
 @app.route('/reviewpaper')
 def reviewpaper():
-    return render_template('reviewpaper.html')
+    cur.execute('SELECT Title, PaperID FROM paper')
+    posts = cur.fetchall()
+    for post in posts:
+        print(post)
+    return render_template('reviewpaper.html', posts = posts)
+
+#manages uploading papers
+@app.route('/uploadpaper', methods=['GET', 'POST'])
+def uploadpaper():
+    print('in function upload')
+
+    PaperID = cur.execute("SELECT COUNT(*) FROM paper")
+    PaperID = cur.fetchone()[0]
+    PaperID += 1
+    print(PaperID)
+
+    author_id = cur.execute("SELECT AuthorID FROM author WHERE EmailAddress = %s", [session['id']])
+    print(author_id)
+
+    if request.method == 'POST':
+        print('in request method')
+        title = request.form['title']
+        print(title)
+        file = request.files['paperfile']
+        print(file)
+        print('past file')
+        topic = request.form['topic']
+        print(topic)
+
+        print(title)
+        print(file.filename)
+        print(topic)
+
+        if not title:
+            flash('Title is required!')
+        else:
+            #statement1= "INSERT INTO paper (PaperID, AuthorID, Title, FilenameOriginal, %s) VALUES (%s, %s, %s, %s, 1)"
+            statement1= "INSERT INTO paper (PaperID, AuthorID, Title, FilenameOriginal, Active, %s) "
+            values1 = (topic)
+            new = statement1 % values1
+            print(new)
+            statement2=  "VALUES (%s, %s, %s, %s, 1, 1)"
+            values = (PaperID, author_id, title, file.filename)
+            input = new + statement2
+            print(input)
+            cur.execute(input, values)
+            #cur.execute('INSERT INTO paper (PaperID, AuthorID, Title, FilenameOriginal, %s) VALUES (%s, %s, %s, %s, 1)', (AsIs(topic), PaperID, author_id, title, file.filename))
+            print(cur._last_executed)
+            print('query executed')
+            db.commit()
+            return render_template('homepageauthor.html')
+  
+    return render_template('uploadpaper.html')
+
+@app.route('/usermaintenance')
+def usermaintenance():
+    cur.execute('SELECT * FROM author')
+    users = cur.fetchall()
+    for user in users:
+        print(user)
+    return render_template('usermaintenance.html', users = users)
+
+@app.route('/authoraccount', methods=['GET', 'POST'])
+def authoraccount():
+    print('in author account')
+    msg = ''
+
+    if request.method == 'POST':
+        author_id = cur.execute("SELECT AuthorID FROM author WHERE EmailAddress = %s", [session['id']])
+        print('in request method')
+        to_update = request.form['to_update']
+        print(to_update)
+        new_val = request.form['newval']
+        print(new_val)
+        password = request.form['password']
+        print(password)
+
+        valid = cur.execute('SELECT * FROM author WHERE Password = %s', [password])
+
+        if valid:
+            print('valid')
+            statement1 = 'Update author SET %s = ' 
+            statement2 = '%s WHERE AuthorID = %s'
+            value = to_update
+            inputs = (new_val, author_id)
+            new = statement1 % value
+            print(new)
+            input = new + statement2
+            print(input)
+            cur.execute(input, inputs)
+            db.commit()
+            print(cur._last_executed)
+            print(cur.execute('Select Firstname from author where AuthorID = 1'))
+            msg = 'Account change successful!'
+            return render_template('authoraccount.html', msg = msg)
+
+    return render_template('authoraccount.html')
+
+@app.route('/retrieve', methods=['GET', 'POST'])
+def retrieve():
+    msg = ''
+    if request.method == "POST":
+        email = request.form['email']
+        print(email)
+        zipcode = request.form['zipcode']
+        print(zipcode)
+
+        cur.execute('SELECT Password FROM author WHERE EmailAddress = %s and ZipCode = %s UNION SELECT Password FROM reviewer WHERE EmailAddress = %s and ZipCode = %s', (email, zipcode, email, zipcode))
+        valid = cur.fetchone()
+
+
+        if valid:
+            print('Valid')
+            password = valid[0]
+            print(password)
+            msg = 'Your password is ' + password
+            flash(msg)
+            return render_template('getpassword.html', msg = msg)
+
+    return render_template('getpassword.html')

@@ -55,11 +55,21 @@
          <label for="department" class="cols-sm-2 control-label">Department</label>
          <div class="cols-sm-10">
           <div class="input-group">
-           <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-           <input type="password" class="form-control" name="dpmt" placeholder="Department" id="dpmt" required  placeholder="Enter your Password"/>
+           <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+           <input type="text" class="form-control" name="dpmt" placeholder="Department" id="dpmt" required  placeholder="Enter your Password"/>
           </div>
          </div>
         </div>
+
+        <div class="form-group">
+          <label for="address" class="cols-sm-2 control-label">Address</label>
+          <div class="cols-sm-10">
+           <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+            <input type="text" class="form-control" name="address" placeholder="Department" id="address" required  placeholder="Enter your Address"/>
+           </div>
+          </div>
+         </div>
 
         <div class="form-group">
           <label for="city" class="cols-sm-2 control-label">City</label>
@@ -110,13 +120,36 @@
            </div>
           </div>
          </div>
-        
+
+        <div class="form-group">
+          <label for="email" class="cols-sm-2 control-label">Choose an account type:</label>
+          <div class="cols-sm-10">
+           <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+            <select name="usertype" id="usertype">
+              <option value="author">Author</option>
+              <option value="reviewer">Reviewer</option>
+            </select>
+           </div>
+          </div>
+         </div>
+
         <div class="form-group">
           <label for="password" class="cols-sm-2 control-label">Password</label>
           <div class="cols-sm-10">
            <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-            <input type="text" class="form-control" name="password" id="password"  placeholder="Enter your Name"/>
+            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+            <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+           </div>
+          </div>
+         </div>
+
+         <div class="form-group">
+          <label for="confirmpass" class="cols-sm-2 control-label">Confirm Password</label>
+          <div class="cols-sm-10">
+           <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+            <input type="password" class="form-control" name="confirmpass" id="confirmpass"  placeholder="Confirm your Password"/>
            </div>
           </div>
          </div>

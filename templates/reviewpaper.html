@@ -22,7 +22,7 @@
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a href="/welcome" class="nav-link">Home </a></li>
-        <li class="nav-item"><a href="/uploadreview" class="nav-link">Upload Review</a></li>
+        <li class="nav-item"><a href="/uploadreview" class="nav-link">Account</a></li>
         <li class="nav-item"><a href="/reviewreg" class="nav-link">Reviewer Registraion</a></li>
         <li class="nav-item"><a href="/reviewpaper" class="nav-link">Review Paper</a></li>
       </ul>
@@ -31,6 +31,13 @@
 </nav>
   <body>
     <h1>Review Paper</h1>
+    {% for post in posts %}
+        <a href="#">
+            <h2>{{ post[0] }}</h2>
+        </a>
+        <h3>{{ post[1] }}</h3>
+        <hr>
+    {% endfor %}
   </body>
 
 

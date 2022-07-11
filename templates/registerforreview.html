@@ -22,7 +22,7 @@
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a href="/welcome" class="nav-link">Home </a></li>
-        <li class="nav-item"><a href="/uploadreview" class="nav-link">Upload Review</a></li>
+        <li class="nav-item"><a href="/uploadreview" class="nav-link">Account</a></li>
         <li class="nav-item"><a href="/reviewreg" class="nav-link">Reviewer Registraion</a></li>
         <li class="nav-item"><a href="/reviewpaper" class="nav-link">Review Paper</a></li>
       </ul>
@@ -32,21 +32,47 @@
   <body>
     <div class="center">
       <h1>Reviewer Registration</h1>
-      <form method="post">
-        <div class="txt_field">
-          <input type="text" required>
-          <span></span>
-          <label>Conference</label>
+      <form> 
+        <div class="form">
+            <label>Please Select Topics of Interest From The Options Below:</label>
+            <select id="myform" name='category' multiple class="form-control">
+                <option>Analysis of Algorithms</option>
+                <option>Applications, Architecture</option>
+                <option>Artificial Intelligence</option>
+                <option>Computer Engineering</option>
+                <option>Curriculum</option>
+                <option>Data Structures</option>
+                <option>Databases</option>
+                <option>Distanced Learning</option>
+                <option>Distributed Systems</option>
+                <option>Ethical Societal Systems</option>
+                <option>First Year Computing</option>
+                <option>Gender Issues</option>
+                <option>Grant Writing</option>
+                <option>Graphics Image Processing</option>
+                <option>Human Computer Interaction</option>
+                <option>Laboratory Environments</option>
+                <option>Literacy</option>
+                <option>Mathematics In Computing</option>
+                <option>Multimedia</option>
+                <option>Networking Data Communications</option>
+                <option>Non Major Courses</option>
+                <option>Object Oriented Issues</option>
+                <option>Operating Systems</option>
+                <option>Parallel Processing</option>
+                <option>Pedagogy</option>
+                <option>Programming Languages</option>
+                <option>Research</option>
+                <option>Security</option>
+                <option>Software Engineering</option>
+                <option>Systems Analysis And Design</option>
+                <option>Using Technology In The Classroom</option>
+                <option>Web And Internet Programming</option>
+            </select>
+            <label>Note: Hold the ctrl key while selecting topics to pick multiple.</label>
         </div>
-
-        <div class="txt_field">
-          <input type="password" required>
-          <span></span>
-          <label>Topics Interested In</Title></label>
-        </div>
-        <input type="submit" value="Submit">
-        </div>
-      </form>
+        <input type="submit" value="Register" class="form-control btn btn-success " name="">
+    </form> 
     </div>
   </body>
 
