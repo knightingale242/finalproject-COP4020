@@ -23,7 +23,6 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active"><a href="/" class="nav-link">Home </a></li>
         <li class="nav-item"><a href="/authoraccount" class="nav-link">Account</a></li>
-        <li class="nav-item"><a href="/reports" class="nav-link">Reports</a></li>
         <li class="nav-item"><a href="/scorebreakdown" class="nav-link">Score Breakdown</a></li>
         <li class="nav-item"><a href="/uploadpaper" class="nav-link">Upload Paper</a></li>
         <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
@@ -33,27 +32,49 @@
 </nav>
   <body>
     <center>
-      <h1>Score Report</h1>
-      <br>
-      <table style="width:100%">
+    <h1>Review Reports</h1>
+    </center>
+
+    <table>
         <tr>
+          <th>Review ID</th>
           <th>Paper ID</th>
-          <th>Paper Title</th>
-          <th>Reviewer 1 ID</th>
-          <th>Reviewer 2 ID</th>
-          <th>Reviewer 3 ID</th>
-
-
+          <th>Title</th>
+          <th>Timeliness of Topic</th>
+          <th>Supportive Evidence</th>
+          <th>Technical Quality</th>
+          <th>Scope of Coverage</th>
+          <th>Citation of Previous Work</th>
+          <th>Originality</th>
+          <th>Organization of Paper</th>
+          <th>Clarity of Main Message</th>
+          <th>Mechanics</th>
+          <th>Suitability for Presentation</th>
+          <th>Potential Interest in Topic</th>
+          <th>Overall Rating</th>
+          <th>Comfort Level Acceptability</th>
         </tr>
+        {% for selection in papers %}
         <tr>
-          <td>NULL</td>
-          <td>NULL</td>
-          <td>NULL</td>
-          <td>NULL</td>
-          <td>NULL</td>
+          <td>{{selection[0]}}</td>
+          <td>{{selection[1]}}</td>
+          <td>{{selection[2]}}</td>
+          <td>{{selection[3]}}</td>
+          <td>{{selection[4]}}</td>
+          <td>{{selection[5]}}</td>
+          <td>{{selection[6]}}</td>
+          <td>{{selection[7]}}</td>
+          <td>{{selection[8]}}</td>
+          <td>{{selection[9]}}</td>
+          <td>{{selection[10]}}</td>
+          <td>{{selection[11]}}</td>
+          <td>{{selection[12]}}</td>
+          <td>{{selection[13]}}</td>
+          <td>{{selection[14]}}</td>
+          <td>{{selection[15]}}</td>
         </tr>
+        {% endfor %}
       </table>
-      </center>
   </body>
 
 

@@ -102,9 +102,14 @@ def scorebreakdown():
         print(paper)
     return render_template('scorebreakdown.html', papers = papers)
 
-@app.route('/welcome')
-def welcome():
-    return render_template('homepage.html')
+@app.route('/authors')
+def authors():
+    cur.execute('SELECT AuthorID, PaperID, Title FROM paper')
+    papers = cur.fetchall()
+    print(papers)
+    for paper in papers:
+        print(paper)
+    return render_template('authors.html', papers = papers)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -185,7 +190,12 @@ def reviewreg():
 
 @app.route('/reports')
 def reports():
-    return render_template('scorereport.html')
+    cur.execute('select ReviewID, review.Paperid, Title, AppropriatenessOfTopic, TimelinessOfTopic, SupportiveEvidence, TechnicalQuality, ScopeOfCoverage, CitationOfPreviousWork, Originality, OrganizationOfPaper, ClarityOfMainMessage, Mechanics, SuitabilityForPresentation, PotentialInterestInTopic, OverallRating, ComfortLevelTopic, ComfortLevelAcceptability from review natural join paper') 
+    papers = cur.fetchall()
+    print(papers)
+    for paper in papers:
+        print(paper)
+    return render_template('scorereport.html', papers = papers)
 
 @app.route('/reviewpaper', methods=['GET', 'POST'])
 def reviewpaper():
