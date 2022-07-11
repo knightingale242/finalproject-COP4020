@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <link rel="stylesheet" href="{{ url_for('static', filename= 'css/base.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename= 'css/main.css') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <nav class="navbar navbar-expand-lg py-3 navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a href="#" class="navbar-brand">
+      <!-- Logo Image -->
+      <img src="https://cdn4.vectorstock.com/i/1000x1000/44/43/stack-paper-icon-logo-stationery-stacked-vector-26674443.jpg" width="45" alt="" class="d-inline-block align-middle mr-2">
+      <!-- Logo Text -->
+      <span class="text-uppercase font-weight-bold">CPMS</span>
+    </a>
+
+    <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
+
+    <div id="navbarSupportedContent" class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active"><a href="/welcome" class="nav-link">Home </a></li>
+        <li class="nav-item"><a href="/authorreg" class="nav-link">Author Registration</a></li>
+        <li class="nav-item"><a href="/reports" class="nav-link">Reports</a></li>
+        <li class="nav-item"><a href="/scorebreakdown" class="nav-link">Score Breakdown</a></li>
+        <li class="nav-item"><a href="/uploadpaper" class="nav-link">Upload Paper</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <body>
+    <h1>Upload Paper</h1>
+        <form method = "POST" enctype="multipart/form-data">
+            <div class = 'form'>
+                <label>Please Upload Paper Below</label>
+                <form> 
+                    <div class="form">
+                        <div class="form-group">
+                            <label for="affiliation" class="cols-sm-2 control-label">Title</label>
+                            <div class="cols-sm-10">
+                             <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                              <input type="text" class="form-control" name="title" id="title" placeholder="Enter your Affiliation" required>
+                             </div>
+                            </div>
+                           </div>
+
+                        <div class="form-group">
+                            <label for="affiliation" class="cols-sm-2 control-label">Upload Paper</label>
+                            <div class="cols-sm-10">
+                             <div class="input-group">
+                              <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                              <input type="file" class="form-control" name="paperfile" id="paperfile" placeholder="Enter your Affiliation" required>
+                             </div>
+                            </div>
+                           </div>
+
+                        <div class = 'form-group'></div>
+                        <label>Please Select Topics of Interest From The Options Below:</label>
+                        <select id="topic" name='topic'>
+                            <option value="AnalysisofAlgorithms">Analysis of Algorithms</option>
+                            <option value="Applications">Applications, Architecture</option>
+                            <option value="Architecture">Architecture</option>
+                            <option value="Artificial Intelligence">Artificial Intelligence</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Curriculum">Curriculum</option>
+                            <option value="DataStructures">Data Structures</option>
+                            <option value="Databases">Databases</option>
+                            <option value="DistancedLearning">Distanced Learning</option>
+                            <option value="DistributedSystems">Distributed Systems</option>
+                            <option value="EthicalSocietalSystems">Ethical Societal Systems</option>
+                            <option value="FirstYearComputing">First Year Computing</option>
+                            <option value="GenderIssues">Gender Issues</option>
+                            <option value="GrantWriting">Grant Writing</option>
+                            <option value="GraphicsImageProcessing">Graphics Image Processing</option>
+                            <option value="HumanComputerInteraction">Human Computer Interaction</option>
+                            <option value="LaboratoryEnvironments">Laboratory Environments</option>
+                            <option value="Literacy">Literacy</option>
+                            <option value="MathematicsInComputing">Mathematics In Computing</option>
+                            <option value="Multimedia">Multimedia</option>
+                            <option value="NetworkingDataCommunications">Networking Data Communications</option>
+                            <option value="NonMajorCourses">Non Major Courses</option>
+                            <option value="ObjectOrientedIssues">Object Oriented Issues</option>
+                            <option value="OperatingSystems">Operating Systems</option>
+                            <option value="ParallelProcessing">Parallel Processing</option>
+                            <option value="Pedagogy">Pedagogy</option>
+                            <option value="ProgrammingLanguages">Programming Languages</option>
+                            <option value="Research">Research</option>
+                            <option value="Security">Security</option>
+                            <option value="SoftwareEngineering">Software Engineering</option>
+                            <option value="SystemsAnalysisAndDesign">Systems Analysis And Design</option>
+                            <option value="UsingTechnologyInTheClassroom">Using Technology In The Classroom</option>
+                            <option value="WebAndInternetProgramming">Web And Internet Programming</option>
+                        </select>
+                        </div>
+
+                        <label>Note: Hold the ctrl key while selecting topics to pick multiple.</label>
+
+                    <input type="submit" value="Upload" class="form-control btn btn-success " name="">
+                </div>
+                </form> 
+            </div>
+        </form>
+
+
+  </body>
+
+
+</html>
